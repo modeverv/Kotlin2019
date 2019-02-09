@@ -32,9 +32,88 @@ fun main(args: Array<String>) {
     map(list, fun(n: Int): Int { return n + 1 })
     // 3
     map(list, { n: Int -> n + 1 })
+    // 高階関数に渡す特殊な記法
+    map(listOf(1, 2, 3)) {
+        it + 1
+    }
 
+    val obj = MyClass()
+    println(obj)
+    obj.name = "S"
+    println(obj.greet())
 
+    var u = User(1,"hoge")
+    u.name = "feef"
+    u.out()
+
+    val bar = Bar()
+    bar.foo()
+    bar.bar()
+
+    val jG = JapaneseGreeter("私")
+    jG.greet()
+
+    val gCs = GreetableCharSeq("me")
+    gCs.hello()
+
+    fun String.hello(){
+        println("Hello $this")
+    }
+    "World".hello()
 }
+
+// クラス
+class MyClass {
+    var name = ""
+
+    fun greet(){
+        println("Hello MyClass! ${name}")
+    }
+}
+
+class User(val id:Long,var name:String) {
+    fun out(){
+        println("${id} - ${name}")
+    }
+}
+// 継承
+open class Foo{
+    fun foo() {
+        println("Foo")
+    }
+}
+
+class Bar:Foo() {
+    fun bar(){
+        println("Bar")
+    }
+}
+
+// 抽象クラス
+abstract class Greeter{
+    abstract val name:String
+    abstract fun greet()
+}
+class JapaneseGreeter(override val name:String):Greeter(){
+    override fun greet() {
+        println("こんにちは ${name}です")
+    }
+}
+
+// interface
+interface Ge {
+    val name:String
+    fun greet()
+}
+
+// 移譲
+class GreetableCharSeq(val cs:CharSequence):CharSequence by cs {
+    fun hello(){
+        println("Hello $cs")
+    }
+}
+
+
 
 /**
  * オレオレmap
@@ -86,6 +165,6 @@ fun h2(name: String, exclamation: Boolean = false) {
 /**
  * 再帰
  */
-fun sumRec(ints: List<Int>): Int = if (ints.isEmpty()) 0 else ints.first() + sumRec(ints.drop(1))
+tailrec fun sumRec(ints: List<Int>): Int = if (ints.isEmpty()) 0 else ints.first() + sumRec(ints.drop(1))
 
 
